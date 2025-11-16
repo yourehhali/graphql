@@ -1,0 +1,229 @@
+{
+  "tables": {
+    "audit": {
+      "description": "Some exercises require reviews from other students or any other member of the school. The reviewer checks that some conditions are met by the code of the student being reviewed.",
+      "columns": [
+        "id",
+        "groupId",
+        "auditorId",
+        "attrs",
+        "grade",
+        "createdAt",
+        "updatedAt",
+        "code",
+        "resultId",
+        "version",
+        "endAt",
+        "private",
+        "discordToken"
+      ]
+    },
+    "event": {
+      "description": "An event anchors an objects into time.",
+      "columns": [
+        "id",
+        "createdAt",
+        "endAt",
+        "registrationId",
+        "objectId",
+        "parentId",
+        "status",
+        "path",
+        "campus",
+        "code"
+      ]
+    },
+    "event_user": {
+      "description": "Links users and events.",
+      "columns": [
+        "id",
+        "createdAt",
+        "userId",
+        "eventId"
+      ]
+    },
+    "group": {
+      "description": "Projects are required to be made by groups.",
+      "columns": [
+        "id",
+        "objectId",
+        "eventId",
+        "captainId",
+        "createdAt",
+        "updatedAt",
+        "status",
+        "path",
+        "campus"
+      ]
+    },
+    "group_status": {
+      "columns": ["status"]
+    },
+    "group_user": {
+      "description": "Links users to groups.",
+      "columns": [
+        "id",
+        "userId",
+        "groupId",
+        "confirmed",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "match": {
+      "description": "Used for the bet system in bonus exercises.",
+      "columns": [
+        "id",
+        "createdAt",
+        "updatedAt",
+        "objectId",
+        "userId",
+        "matchId",
+        "confirmed",
+        "bet",
+        "result",
+        "path",
+        "campus",
+        "eventId"
+      ]
+    },
+    "object": {
+      "description": "Generic representations of elements in the curriculum.",
+      "columns": [
+        "id",
+        "name",
+        "type",
+        "status",
+        "attrs",
+        "childrenAttrs",
+        "createdAt",
+        "updatedAt",
+        "externalRelationUrl",
+        "authorId",
+        "campus",
+        "referenceId",
+        "referencedAt"
+      ]
+    },
+    "object_child": {
+      "description": "Keeps a child-parent relationship between two objects.",
+      "columns": [
+        "id",
+        "parentId",
+        "childId",
+        "attrs",
+        "key",
+        "index",
+        "progress"
+      ]
+    },
+    "progress": {
+      "description": "Register of the steps in the progression of students doing exercises and projects.",
+      "columns": [
+        "id",
+        "createdAt",
+        "updateAt",
+        "userId",
+        "groupId",
+        "eventId",
+        "version",
+        "grade",
+        "isDone",
+        "path",
+        "campus",
+        "objectId"
+      ]
+    },
+    "record": {
+      "description": "Keeps a register for bans or other situations.",
+      "columns": [
+        "id",
+        "userId",
+        "authorId",
+        "message",
+        "banEndAt",
+        "createdAt"
+      ]
+    },
+    "registration": {
+      "description": "Registrations to events.",
+      "columns": [
+        "id",
+        "createdAt",
+        "startAt",
+        "endAt",
+        "eventStartAt",
+        "objectId",
+        "parentId",
+        "attrs",
+        "path",
+        "campus"
+      ]
+    },
+    "registration_user": {
+      "description": "Users registered to events.",
+      "columns": [
+        "id",
+        "registrationId",
+        "userId",
+        "createdAt",
+        "result"
+      ]
+    },
+    "result": {
+      "description": "Result for each exercise and project.",
+      "columns": [
+        "id",
+        "createdAt",
+        "updatedAt",
+        "grade",
+        "attrs",
+        "type",
+        "userId",
+        "groupId",
+        "objectId",
+        "path",
+        "version",
+        "eventId",
+        "isLast",
+        "campus"
+      ]
+    },
+    "role": {
+      "columns": ["id", "slug", "name", "description", "createdAt", "updatedAt", "token"]
+    },
+    "transaction": {
+      "description": "Register of rewards given to students.",
+      "columns": [
+        "id",
+        "type",
+        "amount",
+        "userId",
+        "attrs",
+        "createdAt",
+        "path",
+        "objectId",
+        "eventId",
+        "campus"
+      ]
+    },
+    "user": {
+      "columns": [
+        "id",
+        "githubId",
+        "githubLogin",
+        "discordId",
+        "discordLogin",
+        "profile",
+        "attrs",
+        "createdAt",
+        "updateAt",
+        "discordDMChannelId",
+        "campus"
+      ]
+    },
+    "user_role": {
+      "columns": ["id", "userId", "roleId"]
+    }
+  }
+}
