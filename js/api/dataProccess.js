@@ -1,19 +1,16 @@
 export default class DataFormatter {
   constructor() {}
 
-  format(type, data) {
+  async format(data, type) {
     switch (type) {
       case "xp":
         return this.formatXPPerProject(data);
 
-      case "auditTotal":
-        return this.formatAuditRatioTotal(data);
+      case "audit":
+        return this.formatAuditRatio(data);
 
-      case "projectUp":
-        return this.formatProjectsPassed(data);
-
-      case "projectDown":
-        return this.formatProjectsFailed(data);
+      case "projects":
+        return this.formatProjects(data);
 
       default:
         return data;
@@ -21,38 +18,34 @@ export default class DataFormatter {
   }
 
   formatXPPerProject = (data) => {
-    if (!data?.user?.transactions) return { transactions: [] };
+    console.log("data from formatter", data);
+    console.log(data.user.xpPerProject)
+    if (!data?.user?.xpPerProject) return [];
 
     return {
-      transactions: data.user.transactions.map((t) => ({
-        projectName: t.object?.name ?? null,
-        originName: t.originEvent?.object?.name ?? null,
-        eventName: t.event?.object?.name ?? null,
-        xpAmount: t.amount ?? 0,
+      projects: data.user.xpPerProject.projects.map((t) => ({
+        projectName: t.project?.name ?? null,
+        xpAmount: t.xp ?? 0,
       })),
     };
   };
 
-  formatAuditRatioTotal = (data) => {
-    if (!data?.user) return { auditRatio: 0, totalPassed: 0, totalFailed: 0, bonusUp: 0 };
+  formatAuditRatio = (data) => {
+    if (!data?.user)
+      return { auditRatio: 0, totalPassed: 0, totalFailed: 0, bonusUp: 0 };
 
     return {
-      auditRatio: data.user.auditRatio ?? 0,
-      totalPassed: data.user.totalUp ?? 0,
-      totalFailed: data.user.totalDown ?? 0,
-      bonusUp: data.user.totalUpBonus ?? 0,
+      auditRatio: data.user.auditData.auditRatio ?? 0,
+      totalPassed: data.user.auditData.totalUp ?? 0,
+      totalFailed: data.user.auditData.totalDown ?? 0,
+      bonusUp: data.user.auditData.totalUpBonus ?? 0,
     };
   };
 
-  formatProjectsPassed = (data) => {
+  formatProjects = (data) => {
     return {
-      totalPassed: data?.result_aggregate?.aggregate?.count ?? 0,
-    };
-  };
-
-  formatProjectsFailed = (data) => {
-    return {
-      totalFailed: data?.result_aggregate?.aggregate?.count ?? 0,
+      succeeded: data?.succeeded?.aggregate?.count ?? 0,
+      failed: data?.failed?.aggregate?.count ?? 0,
     };
   };
 }

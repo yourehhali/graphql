@@ -1,20 +1,16 @@
 import Api from "./sendQuery.js";
+import DataFormatter from "./dataProccess.js";
 
 export default class Query {
   constructor() {
     this.GraphQL = new Api();
+    this.formatData = new DataFormatter();
   }
   get = async (type, event) => {
-    switch (type) {
-      case "xp":
-        return await this.GraphQL.getGraphData(this.XPPerProject(event));
-      case "auditTotal":
-        return await this.GraphQL.getGraphData(this.AuditRatioTotal());
-      case "projectUp":
-        return await this.GraphQL.getGraphData(this.ProjectsPassed(event));
-      case "projectDown":
-        return await this.GraphQL.getGraphData(this.ProjectsFailed(event));
-    }
+    return await this.formatData.format(
+      await this.GraphQL.getGraphData(this.Query(event)),
+      type
+    );
   };
   Query = (event) => {
     return `{

@@ -11,7 +11,7 @@ export default class Login {
   handleSubmit = async (e) => {
     e.preventDefault();
     const username = e.target.username.value.trim();
-    const password = e.target.password.value.trim();
+    const password = e.target.password.value;
 
     const token = btoa(`${username}:${password}`);
 
@@ -21,9 +21,6 @@ export default class Login {
         "Content-Type": "application/json",
         Authorization: "Basic " + token,
       },
-      body: JSON.stringify({
-        query: `{ me { id username } }`,
-      }),
     });
 
     const jwt = await res.json();
