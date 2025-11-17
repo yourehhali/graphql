@@ -1,5 +1,5 @@
 import Login from "../auth/login.js";
-import Profile from "../profile/profile.js";
+import Profile from "../pages/profile.js";
 
 export default class Router {
   constructor(root) {

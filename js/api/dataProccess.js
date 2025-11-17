@@ -18,12 +18,12 @@ export default class DataFormatter {
   }
 
   formatXPPerProject = (data) => {
-    console.log("data from formatter", data);
-    console.log(data.user.xpPerProject)
-    if (!data?.user?.xpPerProject) return [];
+    if (!data?.data?.xpPerProject?.length) return { projects: [] };
+
+    const user = data.data.xpPerProject[0];
 
     return {
-      projects: data.user.xpPerProject.projects.map((t) => ({
+      projects: user.projects.map((t) => ({
         projectName: t.project?.name ?? null,
         xpAmount: t.xp ?? 0,
       })),
@@ -31,14 +31,18 @@ export default class DataFormatter {
   };
 
   formatAuditRatio = (data) => {
-    if (!data?.user)
+    console.log("THIS IS HOW DATA ENTERS RATIO FORMATER",data)
+    if (!data.data.auditData)
       return { auditRatio: 0, totalPassed: 0, totalFailed: 0, bonusUp: 0 };
 
+    const stats = data.data.auditData[0];
+    console.log(stats)
+
     return {
-      auditRatio: data.user.auditData.auditRatio ?? 0,
-      totalPassed: data.user.auditData.totalUp ?? 0,
-      totalFailed: data.user.auditData.totalDown ?? 0,
-      bonusUp: data.user.auditData.totalUpBonus ?? 0,
+      auditRatio: stats.auditRatio ?? 0,
+      totalPassed: stats.totalUp ?? 0,
+      totalFailed: stats.totalDown ?? 0,
+      bonusUp: stats.totalUpBonus ?? 0,
     };
   };
 

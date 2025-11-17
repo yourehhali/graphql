@@ -1,0 +1,39 @@
+/* GRAPHS CSS */
+/* ===================================
+   BASE SVG GRAPH AREA
+=================================== */
+.graph {
+  /* width: 200px;  optional */
+  /* height: auto;  optional */
+}
+
+/* ===================================
+   BAR CHART
+=================================== */
+.bar-chart .bar {
+  /* fill: var(--bar-fill, #CD803D); */
+  /* stroke: var(--bar-stroke); */
+  /* stroke-width: var(--bar-stroke-width); */
+  /* rx: var(--bar-radius); */   /* corner rounding */
+}
+
+/* ===================================
+   LINE CHART
+=================================== */
+.line-chart .line {
+  /* stroke: var(--line-color, #2b6cb0); */
+  /* stroke-width: var(--line-width, 2); */
+  /* fill: none; */
+  /* stroke-linejoin: round; */
+  /* stroke-linecap: round; */
+}
+
+/* ===================================
+   PIE CHART
+=================================== */
+.pie-chart .slice {
+  /* fill: var(--slice-color); */
+  /* stroke: var(--slice-stroke); */
+  /* stroke-width: var(--slice-stroke-width); */
+}
+

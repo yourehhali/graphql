@@ -24,6 +24,9 @@ export default class Login {
     });
 
     const jwt = await res.json();
+    let parts = jwt.split(".")
+    let payload = JSON.parse(atob(parts[1]))
+    console.log(payload)
 
     if (jwt) {
       localStorage.setItem("jwt", jwt);

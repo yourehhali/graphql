@@ -23,11 +23,15 @@ export default class Profile {
 
     auditBox.innerHTML = `
     <h2>Audit Summary</h2>
-    <p>Total Audits: $</p>
+    <p>Total Audits: ${auditData.auditRatio}</p>
   `;
 
     const xpBox = document.createElement("div");
     xpBox.innerHTML = `<h2>XP Per Project</h2>`;
+
+    xpBox.innerHTML = xpData.projects
+  .map(p => `<h1>${p.projectName}</h1><p>${p.xpAmount}</p>`)
+  .join("");
     console.log("this is xp data",xpData)
     
 
