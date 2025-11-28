@@ -4,6 +4,7 @@ export default class DataFormatter {
   async format(data, type) {
     switch (type) {
       case "profile":
+        console.log('data from formatter', data)
         return this.formatProfile(data);
       case "xp":
         return this.formatXPPerProject(data);
@@ -23,11 +24,11 @@ export default class DataFormatter {
   }
   formatProfile = (data) => {
     return {
-      firstName: data?.data?.profile?.firstName ?? null,
-      lastName: data?.data?.profile?.lastName ?? null,
-      username: data?.data?.profile?.login ?? null,
-      avatar: data?.data?.profile?.avatar ?? null,
-      email: data?.data?.profile?.email ?? null,
+      firstName: data?.data?.profile[0]?.firstName ?? null,
+      lastName: data?.data?.profile[0]?.lastName ?? null,
+      username: data?.data?.profile[0]?.login ?? null,
+      avatar: data?.data?.profile[0]?.avatar ?? null,
+      email: data?.data?.profile[0]?.email ?? null,
     };
   }
   formatGroupPerProject = (data) => {

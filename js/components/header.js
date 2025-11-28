@@ -2,8 +2,9 @@
 import Logout from "../auth/logout.js";
 export default class Header {
   constructor(navigate) {
-
     this.logout = new Logout(navigate);
+    this.profile = null
+    this.avatarPath = null
   }
 
   render = (root) => {
@@ -27,7 +28,7 @@ export default class Header {
     const headerAvatar = document.createElement("div");
     headerAvatar.classList.add("headerAvatar");
     const avatarImg = document.createElement("img");
-    avatarImg.src = "../../media/avatar.png";
+    avatarImg.src = this.avatarPath;
     avatarImg.alt = "avatar";
     headerAvatar.appendChild(avatarImg);
     //HERE I SHOULD RENDER THE LOGOUT COMPONENT
@@ -44,4 +45,8 @@ export default class Header {
     }
     return header;
   };
+  fillProfileData = (data) => {
+    this.profile = data;
+    this.avatarPath = data.avatar;
+  }
 }

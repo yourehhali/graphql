@@ -18,6 +18,7 @@ export default class Profile {
     console.log("profile", profileData)
     console.log("Audit:", auditData);
     console.log("XP:", xpData.projects);
+    this.header.fillProfileData(profileData);
 
     root.innerHTML = "";
 
