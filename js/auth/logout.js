@@ -12,14 +12,18 @@ export default class Logout {
       this.run(e);
     });
   };
-  render =(root) => {
+  render = (root) => {
     let logoutContainer = document.createElement("div");
     logoutContainer.classList.add("logoutContainer");
 
-    let button = document.createElement("button");
-    button.innerText = "Logout";
-    this.bindEvents(button);
-    logoutContainer.appendChild(button);
+    const logoutIcon = document.createElement("div");
+    logoutIcon.classList.add("logoutIcon");
+    const logoutImg = document.createElement("img");
+    logoutImg.src = "../../media/logout.svg";
+    logoutImg.alt = "logout";
+    logoutIcon.appendChild(logoutImg);
+    this.bindEvents(logoutIcon);
+    logoutContainer.appendChild(logoutIcon);
     root.appendChild(logoutContainer);
-  }
+  };
 }

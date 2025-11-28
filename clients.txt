@@ -1,0 +1,4 @@
+1;John Doe;12 Main Street;75001;Paris
+2;Jane Smith;45 Oak Avenue;69002;Lyon
+3;Alice Martin;78 Pine Road;33000;Bordeaux
+4;Bob Brown;23 Maple Lane;06000;Nice

@@ -16,6 +16,7 @@ export default class Api {
         }),
       }
     );
+    
     const data = await res.json();
     console.log("this is the api data",data)
     return data;

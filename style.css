@@ -1,34 +1,283 @@
-.graph {
-  width: 400px;
-  height: 300px;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+header {
+  width: 85svw;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.headerContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 25px;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  margin-top: 30px;
+  justify-content: space-between;
+  gap: 30px;
+}
+.headerWidget {
+  display: flex;
+  background-color: #111111;
+  padding: 12px;
+  border-radius: 20px;
+  gap: 15px;
+}
+.logoutIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #2a2a2a;
+}
+.logoutIcon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.logoutIcon:hover {
+  cursor: pointer;
+  scale: 1.06;
+  background-color: #333333;
+}
+.headerAvatar img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+.headerAvatar {
+  width: 40px;
+  overflow: hidden;
+  height: 40px;
+  object-fit: contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #2a2a2a;
+}
+.headerAvatar:hover {
+  cursor: pointer;
+  scale: 1.06;
+  background-color: #333333;
 }
 
-/* Bar Chart Example */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #111111;
+}
+.graph {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+.firstRow {
+  display: flex;
+  gap: 30px;
+  width: 85svw;
+  align-items: stretch;
+}
+.arc {
+  transition: stroke-width 0.3s ease-in-out;
+}
+.arc:hover {
+  stroke-width: 58px;
+}
+
+.arc-0 {
+  stroke: #f3ffab;
+}
+.arc-1 {
+  stroke: #ff9999;
+}
+.arc-2 {
+  stroke: #b7c835;
+}
+
+.xpBox,
+.audit-graph {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  color: white;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  gap: 0px;
+  flex: 1;
+  min-width: 0;
+}
 .bar-chart .bar {
+  width: 40px;
   fill: #4caf50;
 }
 
 .bar-chart .bar.positive:hover {
   fill: darkgreen;
 }
+
 .bar-chart .bar.negative:hover {
   fill: darkred;
 }
+
 .bar-chart .bar.negative {
   fill: tomato;
 }
+svg {
+  font-family: sans-serif;
+}
+.data-point {
+  cursor: pointer;
+  transition: r 0.3s ease, fill 0.3s ease, opacity 0.2s ease;
+  opacity: 1;
+}
 
+.tooltip-group,
+.tooltip-bg {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
 
-/* Line Chart Example */
+svg:hover .data-point {
+  opacity: 1;
+}
+
+.data-point:hover ~ .data-point {
+  opacity: 0.3;
+  r: 10;
+}
+
+.data-point:hover + .tooltip-bg,
+.data-point:hover + .tooltip-bg + .tooltip-group {
+  opacity: 1;
+}
+
 .line-chart .line {
   stroke: #2196f3;
   stroke-width: 2px;
   fill: none;
 }
 
-/* Pie Chart Example */
 .pie-chart .slice {
   fill: orange;
   stroke: #fff;
   stroke-width: 2px;
+}
+
+
+.dataList{
+  color: white;
+  padding: 30px;
+  background-color: #1a1a1a;
+  display: flex;
+  border-radius: 10px;
+  width: 450px;
+  flex-direction: column;
+}
+.item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 14px 20px;
+  border-radius: 10px;
+  justify-content: space-between;
+}
+#app{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.item:nth-child(even) {
+  background-color: #252525;
+}
+.row{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+.left {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+.left img{
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.projectsCounts{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background-color: #F3FFAB;
+  color: black;
+}
+
+/* login Style */
+.loginContainer{
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: center;
+}
+.loginContainer form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 12px;
+  background-color: #1A1A1A;
+  padding: 36px;
+}
+.inputContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+label{
+  color: white;
+  font-size: 12px;
+}
+input[type = "text"],
+input[type = "password"]{
+  background-color: #313131;
+  padding: 16px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 12px;
+  width: 100%;
+  color: white;
+  outline: none;
+  border: none;
+}
+input[type = "submit"]{
+  background-color: #F3FFAB;
+  color: black;
+  font-weight: 700;
+  width: 100%;
+  padding: 16px 26px;
+  outline: none;
+  border: none;
+  border-radius: 12px;
 }

@@ -1,20 +1,4 @@
-import Api from "./sendQuery.js";
-import DataFormatter from "./dataProccess.js";
-
-export default class Query {
-  constructor() {
-    this.GraphQL = new Api();
-    this.formatData = new DataFormatter();
-  }
-  get = async (type, event) => {
-    return await this.formatData.format(
-      await this.GraphQL.getGraphData(this.Query(event)),
-      type
-    );
-  };
-
-  Query = (event) => {
-    return `{
+{
   profile: user{
     firstName
     lastName
@@ -53,12 +37,9 @@ export default class Query {
   groups :user {
         groups(where: {event: {object: {name: {_eq: "${event}"}}}}) {
           group {
-            project: object{
-              name
-            }
             members {
-              member:user {
-                avatar : avatarUrl
+              user {
+                avatarUrl
                 login
               }
             }
@@ -82,6 +63,4 @@ export default class Query {
     totalUpBonus
   }
   
-}`;
-  };
 }
