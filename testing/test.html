@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SVG Bar Chart with Tooltip</title>
+
+  <style>
+    :root {
+      --chart-1: #6366f1;
+
+      --card: hsl(0 0% 100%);
+      --card-foreground: hsl(222.2 47.4% 11.2%);
+
+      --tooltip-bg: rgba(0,0,0,0.85);
+      --tooltip-fg: white;
+    }
+
+    .dark {
+      --card: hsl(222.2 84% 4.9%);
+      --card-foreground: hsl(210 40% 98%);
+
+      --tooltip-bg: rgba(255,255,255,0.85);
+      --tooltip-fg: black;
+    }
+    
+    .card {
+      background: var(--card);
+      color: var(--card-foreground);
+      /*width: 640px;*/
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid hsl(0 0% 90%);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      font-family: Arial, sans-serif;
+    }
+
+    /* Tooltip (HTML overlay, positioned over SVG) */
+    .tooltip {
+      position: fixed;
+      padding: 6px 10px;
+      font-size: 13px;
+      border-radius: 6px;
+      background: var(--tooltip-bg);
+      color: var(--tooltip-fg);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -100%);
+      transition: opacity 0.12s ease-out;
+      white-space: nowrap;
+      z-index: 999999;
+    }
+    .graphList{
+        display: flex;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Tooltip element -->
+  <div id="tooltip" class="tooltip"></div>
+  <div class="graphList">
+      <div class="card">
+        <h2>Bar Chart</h2>
+        <p>January – June 2024</p>
+    
+        <div id="chart-container"></div>
+    
+        <div style="margin-top: 16px; font-size: 14px;">
+          Trending up by 5.2% this month ⬆️ <br />
+          <span style="color: gray">Showing total visitors for last 6 months</span>
+        </div>
+      </div>
+
+  </div>
+
+
+  <script>
+    const data = [
+      { month: "January", desktop: 186 },
+      { month: "February", desktop: 305 },
+      { month: "March", desktop: 237 },
+      { month: "April", desktop: 73 },
+      { month: "May", desktop: 209 },
+      { month: "June", desktop: 214 },
+    ];
+
+    const width = 600;
+    const height = 300;
+    const padding = 40;
+
+    const maxValue = Math.max(...data.map(d => d.desktop));
+    const barWidth = (width - padding * 2) / data.length - 20;
+
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", width);
+    svg.setAttribute("height", height);
+    svg.style.background = "var(--card)";
+    svg.style.borderRadius = "12px";
+
+    // reference to tooltip div
+    const tooltip = document.getElementById("tooltip");
+
+    // GRID LINES
+    [0.25, 0.5, 0.75].forEach(p => {
+      const y = height - padding - (height - padding * 2) * p;
+      const line = document.createElementNS(svgNS, "line");
+      line.setAttribute("x1", padding);
+      line.setAttribute("x2", width - padding);
+      line.setAttribute("y1", y);
+      line.setAttribute("y2", y);
+      line.setAttribute("stroke", "#e5e7eb");
+      svg.appendChild(line);
+    });
+
+    // BARS + TOOLTIP EVENTS
+    data.forEach((d, i) => {
+      const barHeight = (d.desktop / maxValue) * (height - padding * 2);
+
+      const rect = document.createElementNS(svgNS, "rect");
+      rect.setAttribute("x", padding + i * (barWidth + 20));
+      rect.setAttribute("y", height - padding - barHeight);
+      rect.setAttribute("width", barWidth);
+      rect.setAttribute("height", barHeight);
+      rect.setAttribute("rx", 8);
+      rect.setAttribute("fill", "var(--chart-1)");
+      rect.style.cursor = "pointer";
+
+      /* Tooltip handlers */
+      rect.addEventListener("mouseenter", (e) => {
+        tooltip.textContent = `${d.month}: ${d.desktop}`;
+        tooltip.style.opacity = "1";
+      });
+
+      rect.addEventListener("mousemove", (e) => {
+        tooltip.style.left = e.clientX + "px";
+        tooltip.style.top = e.clientY - 10 + "px";
+      });
+
+      rect.addEventListener("mouseleave", () => {
+        tooltip.style.opacity = "0";
+      });
+
+      svg.appendChild(rect);
+    });
+
+    // X-AXIS LABELS
+    data.forEach((d, i) => {
+      const text = document.createElementNS(svgNS, "text");
+      text.textContent = d.month.slice(0, 3);
+
+      text.setAttribute(
+        "x",
+        padding + i * (barWidth + 20) + barWidth / 2
+      );
+      text.setAttribute("y", height - padding + 20);
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("font-size", "12");
+      text.setAttribute("fill", "gray");
+
+      svg.appendChild(text);
+    });
+
+    document.getElementById("chart-container").appendChild(svg);
+  </script>
+</body>
+</html>
