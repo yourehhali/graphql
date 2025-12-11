@@ -7,14 +7,14 @@
 
   <style>
     :root {
-      --chart-1: #6366f1;
+      --chart-1: #FFDE26;
 
       --card: hsl(0 0% 100%);
       --card-foreground: hsl(222.2 47.4% 11.2%);
-
+      font-size: 12px;
       --tooltip-bg: rgba(0, 0, 0, 0.85);
-      --chart-desktop: #6366f1;
-      --chart-mobile: #93c5fd;
+      --chart-succeeded: #FFDE26;
+      --chart-failed: #FFB326;
       --tooltip-fg: white;
       --line: #e5e7eb;
       --text: black;
@@ -22,14 +22,18 @@
       --body-bg : white;
       --card-border-color: #FFFFFF90;
     }
-
+    *{
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     .dark {
-      --card: hsl(0, 0%, 10%);
+      --card: #171717;
       --card-foreground: hsl(210 40% 98%);
 
       --tooltip-bg: rgba(255, 255, 255, 0.85);
       --tooltip-fg: black;
-      --line: #e5e7eb38;
+      --line: #1D1D1D;
       --text: white;
       --text-muted: lightgray;
       --body-bg : black;
@@ -42,9 +46,9 @@
       background: var(--card);
       color: var(--card-foreground);
       /*width: 640px;*/
-      margin: 40px auto;
       display: flex;
       flex-direction: column;
+      gap: 30px;
       justify-content: space-between;
       padding: 20px;
       border-radius: 12px;
@@ -65,11 +69,15 @@
       transform: translate(-50%, -100%);
       transition: opacity 0.12s ease-out;
       white-space: nowrap;
-      z-index: 999999;
+      z-index: 10;
     }
 
     .graphList {
       display: flex;
+      flex-direction: row;
+      gap: 20px;
+      max-width: 90svw;
+      margin: auto;
     }
   </style>
 </head>
@@ -81,7 +89,7 @@
     <div class="card">
       <div class="cardHeader">
         <h2>Projects XP</h2>
-        <p>January – June 2024</p>
+        <p>Experience points earned per project</p>
       </div>
 
       <div id="chart-container"></div>
@@ -93,8 +101,8 @@
     </div>
     <div class="card">
       <div class="cardHeader">
-        <h2>Projects XP</h2>
-        <p>January – June 2024</p>
+        <h2>Audit Data</h2>
+        <p>Audit ratio succeeded/failed</p>
       </div>
 
       <div id="radial-chart" style="width: 260px; margin: 0 auto;"></div>
@@ -148,65 +156,58 @@
       svg.appendChild(line);
     });
 
-    data.forEach((d, i) => {
-      const barHeight = (d.xp / maxValue) * (height - padding * 2);
-
+    data.forEach((project, i) => {
+      const barHeight = (project.xp/maxValue)*(height-padding*2);
       const rect = document.createElementNS(svgNS, "rect");
-      rect.setAttribute("x", padding + i * (barWidth + 20));
-      rect.setAttribute("y", height - padding - barHeight);
+      rect.setAttribute("x", padding+i*(barWidth+20));
+      rect.setAttribute("y", height-padding-barHeight);
       rect.setAttribute("width", barWidth);
       rect.setAttribute("height", barHeight);
       rect.setAttribute("rx", 8);
       rect.setAttribute("fill", "var(--chart-1)");
       rect.style.cursor = "pointer";
-
       rect.addEventListener("mouseenter", (e) => {
-        tooltip.textContent = `${d.project}: ${d.xp}`;
+        tooltip.textContent = `${project.project}: ${project.xp}`;
         tooltip.style.opacity = "1";
       });
-
       rect.addEventListener("mousemove", (e) => {
-        tooltip.style.left = e.clientX + "px";
-        tooltip.style.top = e.clientY - 10 + "px";
+        tooltip.style.left = e.clientX+"px";
+        tooltip.style.top = e.clientY-10+"px";
       });
-
       rect.addEventListener("mouseleave", () => {
         tooltip.style.opacity = "0";
       });
-
       svg.appendChild(rect);
     });
 
     data.forEach((d, i) => {
       const text = document.createElementNS(svgNS, "text");
-      text.textContent = d.project.slice(0, 3);
-
+      text.textContent = d.project.slice(0,3);
       text.setAttribute(
         "x",
-        padding + i * (barWidth + 20) + barWidth / 2
+        padding+i*(barWidth+20)+barWidth/2
       );
-      text.setAttribute("y", height - padding + 20);
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("font-size", "12");
-      text.setAttribute("fill", "var(--text-muted)");
-
+      text.setAttribute("y",height-padding+20);
+      text.setAttribute("text-anchor","middle");
+      text.setAttribute("font-size","12");
+      text.setAttribute("fill","var(--text-muted)");
       svg.appendChild(text);
     });
-
     document.getElementById("chart-container").appendChild(svg);
   </script>
   <script>
     const radialData = {
-      desktop: 1260,
-      mobile: 570,
+      succeeded: 12,
+      failed: 8,
+      ratio: 0.7,
     };
-    const totalVisitors = radialData.desktop + radialData.mobile;
+    const auditRatioCount = radialData.succeeded + radialData.failed;
 
     const size = 200;
     const center = size / 2;
 
     const strokeWidth = 25;
-    const outerRadius = (size / 2) - (strokeWidth / 2);  // SAFE radius
+    const outerRadius = (size / 2) - (strokeWidth / 2);
     const innerRadius = outerRadius - strokeWidth;
 
     const svg2 = document.createElementNS(svgNS, "svg");
@@ -218,10 +219,10 @@
     svg2.style.margin = "0 auto";
 
     function arcPath(startAngle, endAngle, radius) {
-      const sx = center + radius * Math.cos(startAngle);
-      const sy = center - radius * Math.sin(startAngle);
-      const ex = center + radius * Math.cos(endAngle);
-      const ey = center - radius * Math.sin(endAngle);
+      const sx = Math.round(center + radius * Math.cos(startAngle));
+      const sy = Math.round(center*1.25 - radius * Math.sin(startAngle));
+      const ex = Math.round(center + radius * Math.cos(endAngle));
+      const ey = Math.round(center*1.25 - radius * Math.sin(endAngle));
 
       return `M ${sx} ${sy} A ${radius} ${radius} 0 0 1 ${ex} ${ey}`;
     }
@@ -229,42 +230,42 @@
     const start = Math.PI;
     const end = 0;
 
-    const desktopAngle = start + (end - start) * (radialData.desktop / totalVisitors);
-    const mobileAngle = desktopAngle + (end - start) * (radialData.mobile / totalVisitors);
+    const succeededAngle = start + (end - start) * (radialData.succeeded / auditRatioCount);
+    const failedAngle = succeededAngle + (end - start) * (radialData.failed / auditRatioCount);
 
-    const desktop = document.createElementNS(svgNS, "path");
-    desktop.setAttribute("d", arcPath(start, desktopAngle, outerRadius));
-    desktop.setAttribute("stroke", "var(--chart-desktop)");
-    desktop.setAttribute("stroke-width", strokeWidth);
-    desktop.setAttribute("stroke-linecap", "round");
-    desktop.setAttribute("fill", "none");
-    svg2.appendChild(desktop);
+    const succeeded = document.createElementNS(svgNS, "path");
+    succeeded.setAttribute("d", arcPath(start, succeededAngle, outerRadius-20));
+    succeeded.setAttribute("stroke", "var(--chart-succeeded)");
+    succeeded.setAttribute("stroke-width", strokeWidth);
+    succeeded.setAttribute("stroke-linecap", "butt");
+    succeeded.setAttribute("fill", "none");
+    svg2.appendChild(succeeded);
 
-    const mobile = document.createElementNS(svgNS, "path");
-    mobile.setAttribute("d", arcPath(desktopAngle, end, outerRadius));
-    mobile.setAttribute("stroke", "var(--chart-mobile)");
-    mobile.setAttribute("stroke-width", strokeWidth);
-    mobile.setAttribute("stroke-linecap", "round");
-    mobile.setAttribute("fill", "none");
-    svg2.appendChild(mobile);
+    const failed = document.createElementNS(svgNS, "path");
+    failed.setAttribute("d", arcPath(succeededAngle, end, outerRadius-20));
+    failed.setAttribute("stroke", "var(--chart-failed)");
+    failed.setAttribute("stroke-width", strokeWidth);
+    failed.setAttribute("stroke-linecap", "butt");
+    failed.setAttribute("fill", "none");
+    svg2.appendChild(failed);
 
-    const textTotal = document.createElementNS(svgNS, "text");
-    textTotal.setAttribute("x", center);
-    textTotal.setAttribute("y", center - 5);
-    textTotal.setAttribute("text-anchor", "middle");
-    textTotal.setAttribute("font-size", "18");
-    textTotal.setAttribute("font-weight", "bold");
-    textTotal.setAttribute("fill", "var(--text)");
-    textTotal.textContent = totalVisitors.toLocaleString();
-    svg2.appendChild(textTotal);
+    const auditRatio = document.createElementNS(svgNS, "text");
+    auditRatio.setAttribute("x", center);
+    auditRatio.setAttribute("y", center*1.25 - 5);
+    auditRatio.setAttribute("text-anchor", "middle");
+    auditRatio.setAttribute("font-size", "18");
+    auditRatio.setAttribute("font-weight", "bold");
+    auditRatio.setAttribute("fill", "var(--text)");
+    auditRatio.textContent = radialData.ratio.toLocaleString();
+    svg2.appendChild(auditRatio);
 
     const label = document.createElementNS(svgNS, "text");
     label.setAttribute("x", center);
-    label.setAttribute("y", center+8);
+    label.setAttribute("y", center*1.25 +8);
     label.setAttribute("text-anchor", "middle");
     label.setAttribute("font-size", "8");
     label.setAttribute("fill", "var(--text-muted)");
-    label.textContent = "Visitors";
+    label.textContent = "Audit Ratio";
     svg2.appendChild(label);
 
     document.getElementById("radial-chart").appendChild(svg2);
